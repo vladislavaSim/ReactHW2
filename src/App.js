@@ -1,6 +1,10 @@
+import Counter from '../src/components/Counter'
+
 function App() {
   return (
-    <></>
+    <>
+      <Counter />
+    </>
   );
 }
 

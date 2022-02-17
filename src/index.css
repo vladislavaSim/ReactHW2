@@ -1,0 +1,16 @@
+* {
+    font-size: 21px;
+}
+button {
+    min-width: 50px;
+}
+.task {
+    padding: 10px 15px;
+    border: 1px solid gray;
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 25px;
+}
+.first {
+    width: 250px;
+}
