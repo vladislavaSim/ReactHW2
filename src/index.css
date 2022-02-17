@@ -1,16 +1,80 @@
 * {
     font-size: 21px;
+    box-sizing: border-box;
+    font-family: 'Raleway', sans-serif;
+}
+body {
+    background-color: beige;
+}
+.container {
+    width: 80%;
+    margin: 50px auto 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 button {
     min-width: 50px;
+    border-radius: 10px;
+    padding: 5px 7px;
+    background-color: #edc26470;
+    border: 1px solid gray;
+    font-size: 17px;
+}
+
+input {
+    display: block;
+    margin-bottom: 10px;
+    border-radius: 10px;
+    padding: 5px 7px;
+    border: 1px solid gray;
+}
+input:focus {
+    border: 1px solid #f1ba56;
+    outline: none;
 }
 .task {
     padding: 10px 15px;
+    min-width: 400px;
     border: 1px solid gray;
     display: flex;
     justify-content: space-around;
     margin-bottom: 25px;
+    background-color: white;
+    border-radius: 10px;
 }
-.first {
-    width: 250px;
+.tasksList {
+    display: block;
 }
+li {
+    list-style: none;
+    display: flex;
+    align-items: baseline;
+    width: 80%;
+    height: fit-content;
+    justify-content: space-between;
+}
+.third {
+    flex-direction: column;
+}
+
+.list {
+    display: block;
+}
+.check {
+    transform:scale(1.5);
+    opacity:0.9;
+    cursor:pointer;
+}
+.tasksList-btn {
+    background-color: transparent;
+    border: none;
+    color: #a67e2c;
+    font-weight: bold;
+    font-size: 20px;
+}
+.clear-bth {
+    font-weight: bold;
+}
+
+
