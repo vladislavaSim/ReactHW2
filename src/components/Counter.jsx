@@ -1,25 +1,23 @@
-import React, { Component } from "react";
+import React, { useState } from "react";
 
-class Counter extends Component {
-    state = {
-        number: 0
+const Counter = () => {
+    const [number, setNumber] = useState(0)
+
+
+    const increment = () => {
+        setNumber(number + 1)
+    }
+    const decrement = () => {
+        setNumber(number - 1)
     }
 
-    increment = () => {
-        this.setState({number: this.state.number + 1})
-    }
-    decrement = () => {
-        this.setState({number: this.state.number - 1})
-    }
-    render() {
         return (
             <div className='task first'>
-                <div>{this.state.number}</div>
+                <div>{number}</div>
                 <div>
-                    <button onClick={this.increment}>+</button>
-                    <button onClick={this.decrement}>-</button></div>
+                    <button onClick={increment}>+</button>
+                    <button onClick={decrement}>-</button></div>
             </div>
         )
-    }
 }
 export default Counter
