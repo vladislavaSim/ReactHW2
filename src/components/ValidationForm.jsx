@@ -1,55 +1,46 @@
-import React, { Component } from "react";
+import React, { useState } from "react";
 
-class ValidationForm extends Component {
-    state = {
-        username: '',
-        password: '',
-        message: ''
-    }
+const ValidationForm = () => {
+    const [username, setUsername] = useState('')
+    const [password, setPassword] = useState('')
+    const [message, setMessage] = useState('')
 
-    changeHandler = (e, field) => {
-        this.setState( {[field]: e.target.value})
-    }
 
-    validation = (e, field) => {
-        if(this.state[field].length < 2) {
-            this.setState( {message: `Sorry, ${field} is too short`} )
+    const validation = (e, field) => {
+        if(e.target.value.length < 2) {
+            setMessage(`Sorry, ${field} is too short`)
         } else {
-            this.setState( {message: ''})
+            setMessage( '')
         }
-        console.log((this.state[field]))
     }
 
-    submitHandler = (e) => {
+    const submitHandler = (e) => {
         e.preventDefault()
-        if(!this.state.message) {
-            console.log('username: ' + this.state.username + ', password: ' + this.state.password)
+        if(!message) {
+            console.log('username: ' + username + ', password: ' + password)
         }
     }
-
-    render() {
         return (
             <div className='task second'>
                 <form>
                     <h2>Please, log in</h2>
                     <input type="text"
-                           value={this.state.username}
-                           onChange={(e) => this.changeHandler(e, 'username')}
-                           onInput={(e) => this.validation(e, 'username')}
+                           value={username}
+                           onChange={(e) => setUsername(e.target.value)}
+                           onInput={(e) => validation(e, 'username')}
                            placeholder='username'
                     />
                     <input type="password"
-                           value={this.state.password}
-                           onChange={(e) => this.changeHandler(e, 'password')}
-                           onInput={(e) => this.validation(e, 'password')}
+                           value={password}
+                           onChange={(e) => setPassword(e.target.value)}
+                           onInput={(e) => validation(e, 'password')}
                            placeholder='password'
                     />
-                    <p>{this.state.message}</p>
-                    <button type='submit' onClick={this.submitHandler}>submit</button>
+                    <p>{message}</p>
+                    <button type='submit' onClick={submitHandler}>submit</button>
                 </form>
             </div>
         )
-    }
 }
 
 export default ValidationForm
