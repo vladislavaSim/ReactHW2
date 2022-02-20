@@ -1,34 +1,56 @@
 import React, {Component} from "react";
+import Task from "./Task";
 
 class ToDo extends Component {
     state = {
         tasksList: [
-            {text: 'wash dishes', isDone: false, id: 11},
-            {text: 'call mom', isDone: false, id: 2},
-            {text: 'do cleaning', isDone: false, id: 3}
+            {text: 'wash dishes', isDone: true, isEdit: false, id: 1},
+            {text: 'call mom', isDone: false, isEdit: false, id: 2},
+            {text: 'do cleaning', isDone: false, isEdit: false, id: 3}
         ],
-        value: ''
+        value: '',
+        searchString: '',
+        filtered: [],
+        filterBy: 'allTasks'
     }
 
-    handleChange = (e) =>  {
-        this.setState({value: e.target.value})
+    returnTaskElem = (item) => {
+        return <Task id={item.id}
+                     key={item.id}
+                     text={item.text}
+                     isDone={item.isDone}
+                     isEdit={item.isEdit}
+                     editTask={(e) => this.editTask(e, item.id)}
+                     changeDone={() => this.changeDone(item.id)}
+                     deleteTask={(e) => this.deleteTask(e, item.id)}
+                     handleChange={(e) => this.handleChange(e, item.text)}
+        />
+}
+
+    changeDone = (id) => {
+        let res = this.state.tasksList.filter(task => task.id === id)
+            .map(item => item.isDone = !item.isDone)
+        this.setState(res)
     }
+
+    handleChange = (e, field) =>  {
+        let newState = e.target.value
+        this.setState({[field]: newState})
+    }
+
+    clearInput = (e) => {
+        e.preventDefault()
+        this.setState({value: ''})
+    }
+
     addTask = (e) => {
         e.preventDefault()
         if(this.state.value) {
             this.setState({
-                value: '', taskList: this.state.tasksList.push(
+                value: '', searchString: '', taskList: this.state.tasksList.push(
                     {text: this.state.value, isDone: false, id: Date.now(), isEdit: false})
             })
         }
-    }
-
-    toggleCheckbox = (id) => {
-        let task = this.state.tasksList.find(task => task.id === id)
-        this.setState(task, () => {
-            {task.isDone = !task.isDone}
-        })
-
     }
     deleteTask = (e, id) => {
         e.preventDefault()
@@ -38,47 +60,72 @@ class ToDo extends Component {
 
     editTask = (e, id) => {
         e.preventDefault()
-        let task = this.state.tasksList.find(task => task.id === id)
-        this.setState({value: task.text})
+        let res = this.state.tasksList.filter(task => task.id === id)
+            .map(item => item.isEdit = !item.isEdit)
+        this.setState(res)
     }
 
-    showTaskList = () => {
-       return this.state.tasksList.map((item => {
-           return <li key={item.id}>
-                    <input type='checkbox'
-                      onClick={() => this.toggleCheckbox(item.id)}
-                      className='check'
-                      value={item.isDone}
-                      />
-               {item.text}
-               <div className="btn-holder">
-                   <button onClick={(e) => this.deleteTask(e, item.id)} className='tasksList-btn'>X</button>
-               </div>
-              </li>
-       }))
-    }
+    searchTask = () => {
+        return this.state.tasksList.filter(task => task.text.includes(this.state.searchString))
+            .map(item => {
+                return this.returnTaskElem(item)
+            })
+}
 
-    clearInput = (e) => {
-        e.preventDefault()
-        this.setState({value: ''})
-    }
+     elemList = (e) => {
+         if (this.state.filterBy === 'allTasks') {
+             return this.state.tasksList.map(item => this.returnTaskElem(item))
+         } else if (this.state.filterBy === 'completedTasks') {
+             return this.state.tasksList.filter(item => item.isDone)
+                 .map(item => this.returnTaskElem(item))
+         } else {
+             return this.state.tasksList.filter(item => !item.isDone)
+                 .map(item => this.returnTaskElem(item))
+         }
+     }
 
+     radio = (e, filter) => {
+         console.log(this.state.filterBy)
+        this.setState({filterBy: filter}, () => {
+            return {filterBy: e.target.value}
+        })
+     }
     render() {
-        let list = this.showTaskList()
-        // console.log(this.state)
+        let found = this.searchTask()
+        let list = this.elemList()
         return (
             <div className='task third'>
                 <form>
-                    <input type="text" placeholder='search...'/>
+                    <input type="text"
+                           placeholder='Search'
+                           value={this.state.searchString}
+                           onChange={(e) => this.handleChange(e, 'searchString')}
+                           onInput={(e) => this.searchTask(e, this.state.searchString)}
+                    />
+                </form>
+                <form className='radio-holder'>
+                    <input type="radio" id="activeTasks" name="filterTasks" value="activeTasks"  onChange={(e) => this.radio(e, 'activeTasks')}/>
+                    <label htmlFor="activeTasks">Active</label>
+                    <input type="radio" id="completedTasks" name="filterTasks" value="completedTasks"  onChange={(e) => this.radio(e, 'completedTasks')}/>
+                    <label htmlFor="activeTasks">Completed</label>
+                    <input type="radio" id="allTasks" name="filterTasks" value="allTasks" onChange={(e) => this.radio(e, 'allTasks')}/>
+                    <label htmlFor="activeTasks">All</label>
                 </form>
                 <div className='list'>
                     <ul className="tasksList">
-                        {list}
+                        {this.state.searchString.length < 1 ? list : found}
                     </ul>
                 </div>
                 <form>
-                    <input type="text" placeholder='New task' value={this.state.value} onChange={this.handleChange}/>
-                    <button onClick={this.addTask}>✓</button>
+                    <input type="text"
+                           placeholder='Add task'
+                           value={this.state.value}
+                           onChange={(e) => this.handleChange(e, 'value')}
+                    />
+                    {this.state.isEdit ?
+                        <button onClick={this.addTask}>✓</button>
+                        : <button onClick={this.addTask}>✓</button>
+                    }
                     <button onClick={this.clearInput} className='clear-btn'>X</button>
                 </form>
             </div>
