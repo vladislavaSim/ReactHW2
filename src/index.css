@@ -76,5 +76,12 @@ li {
 .clear-bth {
     font-weight: bold;
 }
+.radio-holder {
+    display: flex;
+    justify-content: space-between;
+}
+.radio-holder > input {
+    transform: scale(1.7);
+}
 
 
