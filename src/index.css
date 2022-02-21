@@ -76,8 +76,9 @@ li {
 .clear-bth {
     font-weight: bold;
 }
-.radio-holder {
+.radio-holder, .add-task-box {
     display: flex;
+    align-items: baseline;
     justify-content: space-between;
 }
 .radio-holder > input {
