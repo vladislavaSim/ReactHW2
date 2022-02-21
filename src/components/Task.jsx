@@ -1,9 +1,10 @@
 import React from "react";
+
 const markAsDone = {
     textDecoration: 'line-through'
 }
 
-const Task = ({ changeDone, text, id, isDone, deleteTask, editTask, isEdit, handleChange }) => {
+const Task = ({ changeDone, text, id, isDone, deleteTask, toggleEditTask, isEdit, handleChange }) => {
 
     const showTask = () => {
         if(isEdit) {
@@ -16,7 +17,6 @@ const Task = ({ changeDone, text, id, isDone, deleteTask, editTask, isEdit, hand
         }
     }
 
-    console.log(isDone)
     let task = showTask()
     return (
             <li>
@@ -25,9 +25,9 @@ const Task = ({ changeDone, text, id, isDone, deleteTask, editTask, isEdit, hand
                        className='check'
                        value={isDone}
                  />
-                {task}
+               {task}
                 <div className="btn-holder">
-                    <button onClick={(e) => editTask(e, id)} className='tasksList-btn' type='button'>{isEdit ? '✓' : '🖊'}</button>
+                    <button onClick={(e) => toggleEditTask(e, id)} className='tasksList-btn' type='button'>{isEdit ? '✓' : '🖊'}</button>
                     <button onClick={(e) => deleteTask(e, id)} className='tasksList-btn' type='button'>X</button>
                 </div>
             </li>

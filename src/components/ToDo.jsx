@@ -4,9 +4,7 @@ import Task from "./Task";
 class ToDo extends Component {
     state = {
         tasksList: [
-            {text: 'wash dishes', isDone: true, isEdit: false, id: 1},
-            {text: 'call mom', isDone: false, isEdit: false, id: 2},
-            {text: 'do cleaning', isDone: false, isEdit: false, id: 3}
+            // {text: 'wash dishes', isDone: false, isEdit: false, id: 1},
         ],
         value: '',
         searchString: '',
@@ -20,7 +18,7 @@ class ToDo extends Component {
                      text={item.text}
                      isDone={item.isDone}
                      isEdit={item.isEdit}
-                     editTask={(e) => this.editTask(e, item.id)}
+                     toggleEditTask={(e) => this.toggleEditTask(e, item.id)}
                      changeDone={() => this.changeDone(item.id)}
                      deleteTask={(e) => this.deleteTask(e, item.id)}
                      handleChange={(e) => this.handleChange(e, item.text)}
@@ -33,9 +31,9 @@ class ToDo extends Component {
         this.setState(res)
     }
 
-    handleChange = (e, field) =>  {
-        let newState = e.target.value
-        this.setState({[field]: newState})
+    handleChange = (e, field) => {
+        this.setState({[field]: e.target.value})
+        console.log(this.state.tasksList[0])
     }
 
     clearInput = (e) => {
@@ -58,7 +56,7 @@ class ToDo extends Component {
         this.setState({tasksList: newArr})
     }
 
-    editTask = (e, id) => {
+    toggleEditTask = (e, id) => {
         e.preventDefault()
         let res = this.state.tasksList.filter(task => task.id === id)
             .map(item => item.isEdit = !item.isEdit)
@@ -70,7 +68,7 @@ class ToDo extends Component {
             .map(item => {
                 return this.returnTaskElem(item)
             })
-}
+    }
 
      elemList = (e) => {
          if (this.state.filterBy === 'allTasks') {
