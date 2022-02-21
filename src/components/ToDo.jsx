@@ -5,6 +5,8 @@ class ToDo extends Component {
     state = {
         tasksList: [
             {text: 'wash dishes', isDone: false, isEdit: false, id: 1},
+            {text: 'call mom', isDone: false, isEdit: false, id: 2},
+            {text: 'buy milk', isDone: false, isEdit: false, id: 3},
         ],
         value: '',
         searchString: '',
@@ -21,7 +23,7 @@ class ToDo extends Component {
                      toggleEditTask={(e) => this.toggleEditTask(e, item.id)}
                      changeDone={() => this.changeDone(item.id)}
                      deleteTask={(e) => this.deleteTask(e, item.id)}
-                     editTask={(e) => this.editTask(e, item.id)}
+                     handleChange={(e) => this.editTask(e, item.id)}
         />
 }
 
@@ -36,11 +38,12 @@ class ToDo extends Component {
     }
 
     editTask = (e, id) => {
-        console.log(e.target.value)
-       let textToEdit = this.state.tasksList.find(item => item.id ===id).text
-        this.setState({text: textToEdit}, () => {
-                return {textToEdit: e.target.value}
-            })
+       const updateTasks = this.state.tasksList.map(task => {
+           if(task.id === id) {
+               return {...task, text: e.target.value}
+        }
+       })
+        this.setState({tasksList: updateTasks})
     }
 
     clearInput = (e) => {
@@ -119,7 +122,7 @@ class ToDo extends Component {
                         {this.state.searchString.length < 1 ? list : found}
                     </ul>
                 </div>
-                <form>
+                <form className='add-task-box'>
                     <input type="text"
                            placeholder='Add task'
                            value={this.state.value}
