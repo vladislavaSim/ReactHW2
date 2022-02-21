@@ -10,7 +10,6 @@ class ToDo extends Component {
         ],
         value: '',
         searchString: '',
-        filtered: [],
         filterBy: 'allTasks'
     }
 
