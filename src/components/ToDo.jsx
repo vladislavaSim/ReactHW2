@@ -4,7 +4,7 @@ import Task from "./Task";
 class ToDo extends Component {
     state = {
         tasksList: [
-            // {text: 'wash dishes', isDone: false, isEdit: false, id: 1},
+            {text: 'wash dishes', isDone: false, isEdit: false, id: 1},
         ],
         value: '',
         searchString: '',
@@ -21,7 +21,7 @@ class ToDo extends Component {
                      toggleEditTask={(e) => this.toggleEditTask(e, item.id)}
                      changeDone={() => this.changeDone(item.id)}
                      deleteTask={(e) => this.deleteTask(e, item.id)}
-                     handleChange={(e) => this.handleChange(e, item.text)}
+                     editTask={(e) => this.editTask(e, item.id)}
         />
 }
 
@@ -33,7 +33,14 @@ class ToDo extends Component {
 
     handleChange = (e, field) => {
         this.setState({[field]: e.target.value})
-        console.log(this.state.tasksList[0])
+    }
+
+    editTask = (e, id) => {
+        console.log(e.target.value)
+       let textToEdit = this.state.tasksList.find(item => item.id ===id).text
+        this.setState({text: textToEdit}, () => {
+                return {textToEdit: e.target.value}
+            })
     }
 
     clearInput = (e) => {
@@ -64,7 +71,7 @@ class ToDo extends Component {
     }
 
     searchTask = () => {
-        return this.state.tasksList.filter(task => task.text.includes(this.state.searchString))
+        return this.state.tasksList.filter(task => task.text.toLowerCase().includes(this.state.searchString.toLowerCase()))
             .map(item => {
                 return this.returnTaskElem(item)
             })
@@ -83,7 +90,6 @@ class ToDo extends Component {
      }
 
      radio = (e, filter) => {
-         console.log(this.state.filterBy)
         this.setState({filterBy: filter}, () => {
             return {filterBy: e.target.value}
         })
@@ -98,7 +104,6 @@ class ToDo extends Component {
                            placeholder='Search'
                            value={this.state.searchString}
                            onChange={(e) => this.handleChange(e, 'searchString')}
-                           onInput={(e) => this.searchTask(e, this.state.searchString)}
                     />
                 </form>
                 <form className='radio-holder'>
