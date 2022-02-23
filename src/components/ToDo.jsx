@@ -22,9 +22,9 @@ class ToDo extends Component {
                      toggleEditTask={(e) => this.toggleEditTask(e, item.id)}
                      changeDone={() => this.changeDone(item.id)}
                      deleteTask={(e) => this.deleteTask(e, item.id)}
-                     handleChange={(e) => this.editTask(e, item.id)}
+                     editTask={(e) => this.editTask(e, item.id)}
         />
-}
+    }
 
     changeDone = (id) => {
         let res = this.state.tasksList.filter(task => task.id === id)
@@ -37,11 +37,11 @@ class ToDo extends Component {
     }
 
     editTask = (e, id) => {
-       const updateTasks = this.state.tasksList.map(task => {
-           if(task.id === id) {
-               return {...task, text: e.target.value}
-        }
-       })
+        const updateTasks = this.state.tasksList.map(task => {
+            if(task.id === id) {
+                return {...task, text: e.target.value}
+            }
+        })
         this.setState({tasksList: updateTasks})
     }
 
@@ -79,23 +79,23 @@ class ToDo extends Component {
             })
     }
 
-     elemList = (e) => {
-         if (this.state.filterBy === 'allTasks') {
-             return this.state.tasksList.map(item => this.returnTaskElem(item))
-         } else if (this.state.filterBy === 'completedTasks') {
-             return this.state.tasksList.filter(item => item.isDone)
-                 .map(item => this.returnTaskElem(item))
-         } else {
-             return this.state.tasksList.filter(item => !item.isDone)
-                 .map(item => this.returnTaskElem(item))
-         }
-     }
+    elemList = (e) => {
+        if (this.state.filterBy === 'allTasks') {
+            return this.state.tasksList.map(item => this.returnTaskElem(item))
+        } else if (this.state.filterBy === 'completedTasks') {
+            return this.state.tasksList.filter(item => item.isDone)
+                .map(item => this.returnTaskElem(item))
+        } else {
+            return this.state.tasksList.filter(item => !item.isDone)
+                .map(item => this.returnTaskElem(item))
+        }
+    }
 
-     radio = (e, filter) => {
+    radio = (e, filter) => {
         this.setState({filterBy: filter}, () => {
             return {filterBy: e.target.value}
         })
-     }
+    }
     render() {
         let found = this.searchTask()
         let list = this.elemList()
